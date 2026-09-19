@@ -1,0 +1,1 @@
+const prefToken = 'PREF_TOKEN';
