@@ -1,4 +1,4 @@
-import 'package:flutter_base_architecture/features/auth/data/models/login_model.dart';
+import 'package:firebase_chat_app/features/auth/data/models/login_model.dart';
 
 abstract class AuthRepositories {
 

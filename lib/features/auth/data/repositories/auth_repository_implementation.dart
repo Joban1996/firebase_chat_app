@@ -1,7 +1,7 @@
-import 'package:flutter_base_architecture/core/storage/secure_storage_utils.dart';
-import 'package:flutter_base_architecture/features/auth/data/data_source/auth_remote_datasource.dart';
-import 'package:flutter_base_architecture/features/auth/data/models/login_model.dart';
-import 'package:flutter_base_architecture/features/auth/data/repositories/auth_repositories.dart';
+import 'package:firebase_chat_app/core/storage/secure_storage_utils.dart';
+import 'package:firebase_chat_app/features/auth/data/data_source/auth_remote_datasource.dart';
+import 'package:firebase_chat_app/features/auth/data/models/login_model.dart';
+import 'package:firebase_chat_app/features/auth/data/repositories/auth_repositories.dart';
 
 class AuthRepositoryImplementation implements AuthRepositories {
   final AuthRemoteDatasource authRemoteDatasource;

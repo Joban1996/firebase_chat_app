@@ -8,7 +8,7 @@
 PRODUCT_NAME = flutter_base_architecture
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.joban1996.flutterBaseArchitecture
+PRODUCT_BUNDLE_IDENTIFIER = com.jobandee.firebase-chat-app
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.joban1996. All rights reserved.

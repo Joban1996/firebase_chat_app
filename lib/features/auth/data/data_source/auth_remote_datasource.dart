@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_base_architecture/core/network/dio_client.dart';
-import 'package:flutter_base_architecture/core/network/handle_dio_error.dart';
+import 'package:firebase_chat_app/core/network/dio_client.dart';
+import 'package:firebase_chat_app/core/network/handle_dio_error.dart';
 
 import '../models/login_model.dart';
 

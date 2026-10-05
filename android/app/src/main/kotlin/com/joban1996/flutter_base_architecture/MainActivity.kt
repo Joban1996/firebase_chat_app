@@ -1,4 +1,4 @@
-package com.joban1996.flutter_base_architecture
+package com.jobandeep.firebaseChatApp
 
 import io.flutter.embedding.android.FlutterActivity
 

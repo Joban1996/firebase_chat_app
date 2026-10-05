@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_architecture/core/theme/app_colors.dart';
-import 'package:flutter_base_architecture/core/theme/app_theme.dart';
-import 'package:flutter_base_architecture/core/utils/size_utils.dart';
+import 'package:firebase_chat_app/core/theme/app_colors.dart';
+import 'package:firebase_chat_app/core/theme/app_theme.dart';
+import 'package:firebase_chat_app/core/utils/size_utils.dart';
 
 class Splash extends StatelessWidget {
   const Splash({super.key});
