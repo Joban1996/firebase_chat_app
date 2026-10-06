@@ -5,6 +5,9 @@ import 'package:firebase_chat_app/features/chat/presentation/states/sign_up_stat
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/di/injection.dart';
+import '../bloc/chat_bloc.dart';
+
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
 
@@ -15,7 +18,15 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SignUpBloc,SignUpState>(listener: (context,state){
         if(state is SignUpSuccess){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> ChatListScreen()));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                create: (_) => getIt<ChatBloc>(),
+                child: const ChatListScreen(),
+              ),
+            ),
+          );
         }
         if(state is SignUpFailure){
           ScaffoldMessenger.of(context).showSnackBar(

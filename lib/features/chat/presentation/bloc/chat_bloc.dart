@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_chat_app/features/chat/domain/entities/message.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/send_message.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/watch_messages.dart';
+import 'package:firebase_chat_app/features/chat/domain/usecases/watch_users.dart';
 import 'package:firebase_chat_app/features/chat/presentation/events/chat_event.dart';
 import 'package:firebase_chat_app/features/chat/presentation/states/chat_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,16 +10,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChatBloc extends Bloc<ChatEvent,ChatState>{
   final WatchMessages watchMessages;
   final SendMessage sendMessage;
+  final WatchUsers watchUsers;
   StreamSubscription<List<Message>>? _messagesSubscription;
-  ChatBloc({required this.watchMessages,required this.sendMessage}):super(ChatLoading()){
+  ChatBloc({required this.watchMessages,required this.sendMessage,
+    required this.watchUsers}):super(ChatLoading()){
     on<ChatStarted>(_onChatStarted);
     on<ChatMessageUpdated>(_onMessagesUpdated);
     on<ChatMessageSent>(_onMessageSent);
+    on<UsersStarted>(_watchUsers);
+  }
+
+  Future<void> _watchUsers(
+      UsersStarted event,
+      Emitter<ChatState> emit,
+      ) async {
+    print('UsersStarted received');
+
+    await emit.forEach(
+      watchUsers(),
+      onData: (users) {
+        print('Users received: ${users.length}');
+        return ChatUsersLoaded(users);
+      },
+    );
   }
 
   void _onChatStarted(ChatStarted event, Emitter<ChatState> emit) {
     _messagesSubscription?.cancel();
-    _messagesSubscription = watchMessages().listen(
+    _messagesSubscription = watchMessages(event.chatId).listen(
           (messages) => add(ChatMessageUpdated(messages)),
     );
   }

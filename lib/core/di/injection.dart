@@ -8,6 +8,7 @@ import 'package:firebase_chat_app/features/auth/data/repositories/auth_repositor
 import 'package:firebase_chat_app/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/send_message.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/watch_messages.dart';
+import 'package:firebase_chat_app/features/chat/domain/usecases/watch_users.dart';
 import 'package:firebase_chat_app/features/chat/presentation/bloc/sign_up_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -31,7 +32,8 @@ Future<void> setUpLocator()async {
   getIt.registerLazySingleton<ChatRepositoryImpl>(()=>ChatRepositoryImpl(getIt<ChatDataSource>()));
   getIt.registerLazySingleton<WatchMessages>(()=>WatchMessages(getIt<ChatRepositoryImpl>()));
   getIt.registerLazySingleton<SendMessage>(()=>SendMessage(getIt<ChatRepositoryImpl>()));
+  getIt.registerLazySingleton<WatchUsers>(()=>WatchUsers(getIt<ChatRepositoryImpl>()));
   getIt.registerLazySingleton<ChatBloc>(()=>
-      ChatBloc(watchMessages: getIt<WatchMessages>(), sendMessage: getIt<SendMessage>()));
+      ChatBloc(watchMessages: getIt<WatchMessages>(), sendMessage: getIt<SendMessage>(), watchUsers: getIt<WatchUsers>()));
   getIt.registerLazySingleton<SignUpBloc>(()=> SignUpBloc(firebaseAuth,firebaseFirestore));
 }

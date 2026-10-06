@@ -31,7 +31,7 @@ void main() async {
   await ensureSignedIn();
   runApp(MaterialApp(
       home: MultiBlocProvider(providers: [
-        BlocProvider<ChatBloc>(create: (_)=> getIt<ChatBloc>()..add(ChatStarted()),child: ChatPage()),
+        //BlocProvider<ChatBloc>(create: (_)=> getIt<ChatBloc>()..add(ChatStarted()),child: ChatPage()),
         BlocProvider<SignUpBloc>(create: (_)=> getIt<SignUpBloc>())
       ], child: SignUpScreen())));
 }

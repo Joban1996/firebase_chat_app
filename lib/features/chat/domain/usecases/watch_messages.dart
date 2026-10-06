@@ -5,8 +5,8 @@ class WatchMessages {
   final ChatRepository chatRepository;
   WatchMessages(this.chatRepository);
 
-  Stream<List<Message>> call(){
-    return chatRepository.watchMessages();
+  Stream<List<Message>> call(String chatID){
+    return chatRepository.watchMessages(chatID);
   }
 
 }
