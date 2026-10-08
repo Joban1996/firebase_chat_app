@@ -3,5 +3,6 @@ abstract class SignUpEvent {}
 class SignUpHit extends SignUpEvent{
   final String email;
   final String password;
-  SignUpHit(this.email,this.password);
+  final String name;
+  SignUpHit(this.email,this.password, this.name);
 }

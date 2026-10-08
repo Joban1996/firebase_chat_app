@@ -5,8 +5,9 @@ import '../events/chat_event.dart';
 
 class MessageInputBar extends StatefulWidget {
   final String currentUserId;
+  final String chatId;
 
-  const MessageInputBar({super.key, required this.currentUserId});
+  const MessageInputBar({super.key, required this.currentUserId, required this.chatId});
 
   @override
   State<MessageInputBar> createState() => MessageInputBarState();
@@ -20,7 +21,7 @@ class MessageInputBarState extends State<MessageInputBar> {
     if (text.isEmpty) return;
 
     context.read<ChatBloc>().add(
-      ChatMessageSent(text, widget.currentUserId),
+      ChatMessageSent(text, widget.currentUserId, widget.chatId),
     );
 
     _controller.clear();

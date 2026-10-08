@@ -11,14 +11,16 @@ class ChatRepositoryImpl implements ChatRepository{
 
   @override
   Future<void> sendMessage(Message message) {
-    final model =  MessageModel(id: message.id, senderId: message.senderId, text: message.text, timeStamp: message.timeStamp);
+    final model =  MessageModel(id: message.id,
+        senderId: message.senderId,
+        text: message.text, timeStamp: message.timeStamp, chatId: message.chatId);
    return chatDataSource.sendMessage(model);
   }
 
   @override
   Stream<List<Message>> watchMessages(String chatId) {
     // TODO: implement watchMessages
-    return chatDataSource.watchMessages();
+    return chatDataSource.watchMessages(chatId);
   }
 
   @override

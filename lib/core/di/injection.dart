@@ -20,8 +20,11 @@ import '../../features/chat/presentation/bloc/chat_bloc.dart';
 final GetIt getIt = GetIt.instance;
 Future<void> setUpLocator()async {
   final firebaseFirestore = FirebaseFirestore.instance;
-  final firebaseAuth = FirebaseAuth.instance;
+  //final firebaseAuth = FirebaseAuth.instance;
   getIt.registerLazySingleton<SecureStorageUtils>(()=>SecureStorageUtils());
+  getIt.registerLazySingleton<FirebaseAuth>(
+        () => FirebaseAuth.instance,
+  );
   getIt.registerLazySingleton<DioClient>(()=>DioClient());
   getIt.registerLazySingleton<AuthRemoteDatasource>(()=>AuthRemoteDatasource(getIt<DioClient>()));
   getIt.registerLazySingleton<AuthRepositories>(()=>
@@ -33,7 +36,9 @@ Future<void> setUpLocator()async {
   getIt.registerLazySingleton<WatchMessages>(()=>WatchMessages(getIt<ChatRepositoryImpl>()));
   getIt.registerLazySingleton<SendMessage>(()=>SendMessage(getIt<ChatRepositoryImpl>()));
   getIt.registerLazySingleton<WatchUsers>(()=>WatchUsers(getIt<ChatRepositoryImpl>()));
-  getIt.registerLazySingleton<ChatBloc>(()=>
-      ChatBloc(watchMessages: getIt<WatchMessages>(), sendMessage: getIt<SendMessage>(), watchUsers: getIt<WatchUsers>()));
-  getIt.registerLazySingleton<SignUpBloc>(()=> SignUpBloc(firebaseAuth,firebaseFirestore));
+  getIt.registerFactory<ChatBloc>(()=>
+      ChatBloc(watchMessages: getIt<WatchMessages>(),
+          sendMessage: getIt<SendMessage>(),
+          watchUsers: getIt<WatchUsers>()));
+  getIt.registerLazySingleton<SignUpBloc>(()=> SignUpBloc(getIt<FirebaseAuth>(),firebaseFirestore));
 }

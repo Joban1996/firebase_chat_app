@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/features/chat/presentation/events/sign_up_event.dart';
 import 'package:firebase_chat_app/features/chat/presentation/states/sign_up_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent,SignUpState>{
@@ -23,6 +24,7 @@ class SignUpBloc extends Bloc<SignUpEvent,SignUpState>{
          await firebaseFirestore.collection('users').doc(user.uid).set({
            'uid':user.uid,
            'email':user.email,
+           'name':event.name,
            'createdAt': FieldValue.serverTimestamp()
          });
          emit(SignUpSuccess(user));

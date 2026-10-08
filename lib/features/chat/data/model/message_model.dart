@@ -8,7 +8,7 @@ class MessageModel extends Message {
     required super.id,
     required super.senderId,
     required super.text,
-    required super.timeStamp,
+    required super.timeStamp, required super.chatId,
   });
 
   factory MessageModel.fromMap(Map<String, dynamic> map, String documentId) {
@@ -16,7 +16,7 @@ class MessageModel extends Message {
       id: documentId,
       senderId: map['senderId'] as String,
       text: map['text'] as String,
-      timeStamp: (map['timestamp'] as Timestamp).toDate(),
+      timeStamp: (map['timestamp'] as Timestamp).toDate(), chatId: map['chatId'],
     );
   }
 

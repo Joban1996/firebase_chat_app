@@ -51,9 +51,15 @@ class ChatBloc extends Bloc<ChatEvent,ChatState>{
       id: '',
       senderId: event.senderId,
       text: event.text,
-      timeStamp: DateTime.now(),
+      timeStamp: DateTime.now(), chatId: event.chatId,
     );
     await sendMessage(message);
+  }
+
+  //Create chatID
+  String createChatId(String uid1, String uid2) {
+    final ids = [uid1, uid2]..sort();
+    return '${ids[0]}_${ids[1]}';
   }
 
   @override

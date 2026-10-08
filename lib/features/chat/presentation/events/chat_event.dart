@@ -23,6 +23,7 @@ class ChatMessageUpdated extends ChatEvent{
 class ChatMessageSent extends ChatEvent{
   final String text;
   final String senderId;
-  ChatMessageSent(this.text,this.senderId);
+  final String chatId;
+  ChatMessageSent(this.text,this.senderId,this.chatId);
 }
 

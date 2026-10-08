@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_chat_app/core/di/injection.dart';
 import 'package:firebase_chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:firebase_chat_app/features/chat/presentation/pages/message_input_bar.dart';
 import 'package:firebase_chat_app/features/chat/presentation/pages/message_list.dart';
@@ -7,11 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+  const ChatPage({super.key,required this.chatId});
+  final String chatId;
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final currentUserId = getIt<FirebaseAuth>().currentUser?.uid ?? '';
     return Scaffold(
       body: Column(
         children: [
@@ -29,7 +31,7 @@ class ChatPage extends StatelessWidget {
               return Container();
             }),
           ),
-          MessageInputBar(currentUserId: currentUserId)
+          MessageInputBar(currentUserId: currentUserId,chatId: chatId,)
         ],
       ),
     );

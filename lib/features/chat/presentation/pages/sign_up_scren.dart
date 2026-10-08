@@ -13,6 +13,7 @@ class SignUpScreen extends StatelessWidget {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,15 @@ class SignUpScreen extends StatelessWidget {
         child: Column(
           children: [
             TextField(
+              controller: nameController,
+              keyboardType: TextInputType.name,
+              decoration: const InputDecoration(
+                labelText: 'Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
@@ -49,9 +59,7 @@ class SignUpScreen extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
-
             const SizedBox(height: 16),
-
             TextField(
               controller: passwordController,
               obscureText: true,
@@ -65,7 +73,8 @@ class SignUpScreen extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () {
-                context.read<SignUpBloc>().add(SignUpHit(emailController.text.trim(), passwordController.text.trim()));
+                context.read<SignUpBloc>().add(SignUpHit(emailController.text.trim(),
+                    passwordController.text.trim(),nameController.text.trim()));
               },
               child: const Text('Sign Up'),
             ),

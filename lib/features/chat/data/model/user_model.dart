@@ -4,12 +4,14 @@ class UserModel extends User {
   UserModel({
     required super.uid,
     required super.email,
+    required super.name
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map, String documentId) {
     return UserModel(
       uid: map['uid'] ?? documentId,
       email: map['email'] ?? '',
+      name: map['name'] ?? ''
     );
   }
 
@@ -17,6 +19,7 @@ class UserModel extends User {
     return {
       'uid': uid,
       'email': email,
+      'name': name
     };
   }
 }
