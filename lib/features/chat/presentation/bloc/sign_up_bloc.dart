@@ -5,6 +5,9 @@ import 'package:firebase_chat_app/features/chat/presentation/states/sign_up_stat
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/di/injection.dart';
+import '../../../../core/services/notification_service.dart';
+
 class SignUpBloc extends Bloc<SignUpEvent,SignUpState>{
   FirebaseAuth auth;
   FirebaseFirestore firebaseFirestore;
@@ -27,6 +30,13 @@ class SignUpBloc extends Bloc<SignUpEvent,SignUpState>{
            'name':event.name,
            'createdAt': FieldValue.serverTimestamp()
          });
+         try {
+          final settings =  await getIt<NotificationService>().initialize();
+          await getIt<NotificationService>().saveToken();
+          print('Notification status: ${settings.authorizationStatus}');
+         } catch (e) {
+           debugPrint('Notification setup failed: $e');
+         }
          emit(SignUpSuccess(user));
        }else{
          emit(SignUpFailure("User Creation Failed!"));
@@ -35,5 +45,16 @@ class SignUpBloc extends Bloc<SignUpEvent,SignUpState>{
           emit(SignUpFailure(e.message??"SignUp Failed!"));
         }
   }
+
+  Future<UserCredential> login({
+    required String email,
+    required String password,
+  }) {
+    return auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
+
 
 }

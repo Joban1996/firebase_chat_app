@@ -8,13 +8,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key,required this.chatId});
+  const ChatPage({super.key,required this.chatId,required this.username});
   final String chatId;
+  final String username;
+
 
   @override
   Widget build(BuildContext context) {
     final currentUserId = getIt<FirebaseAuth>().currentUser?.uid ?? '';
     return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            const CircleAvatar(
+              radius: 20,
+              child: Icon(Icons.person),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(username,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           Expanded(

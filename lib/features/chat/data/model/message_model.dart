@@ -25,6 +25,7 @@ class MessageModel extends Message {
       'senderId': senderId,
       'text': text,
       'timestamp': Timestamp.fromDate(timeStamp),
+      'chatId': chatId
     };
   }
 }

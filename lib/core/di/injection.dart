@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/core/network/dio_client.dart';
+import 'package:firebase_chat_app/core/services/local_notification_service.dart';
 import 'package:firebase_chat_app/core/storage/secure_storage_utils.dart';
 import 'package:firebase_chat_app/features/auth/data/data_source/auth_remote_datasource.dart';
 import 'package:firebase_chat_app/features/auth/data/repositories/auth_repositories.dart';
@@ -9,12 +10,14 @@ import 'package:firebase_chat_app/features/chat/data/repositories/chat_repositor
 import 'package:firebase_chat_app/features/chat/domain/usecases/send_message.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/watch_messages.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/watch_users.dart';
+import 'package:firebase_chat_app/features/chat/presentation/bloc/login_bloc.dart';
 import 'package:firebase_chat_app/features/chat/presentation/bloc/sign_up_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/auth/presentation/cubit/auth_cubit.dart';
 import '../../features/chat/data/data_sources/chat_data_source.dart';
 import '../../features/chat/presentation/bloc/chat_bloc.dart';
+import '../services/notification_service.dart';
 
 
 final GetIt getIt = GetIt.instance;
@@ -25,6 +28,7 @@ Future<void> setUpLocator()async {
   getIt.registerLazySingleton<FirebaseAuth>(
         () => FirebaseAuth.instance,
   );
+  getIt.registerLazySingleton<LocalNotificationService>(()=> LocalNotificationService());
   getIt.registerLazySingleton<DioClient>(()=>DioClient());
   getIt.registerLazySingleton<AuthRemoteDatasource>(()=>AuthRemoteDatasource(getIt<DioClient>()));
   getIt.registerLazySingleton<AuthRepositories>(()=>
@@ -39,6 +43,13 @@ Future<void> setUpLocator()async {
   getIt.registerFactory<ChatBloc>(()=>
       ChatBloc(watchMessages: getIt<WatchMessages>(),
           sendMessage: getIt<SendMessage>(),
-          watchUsers: getIt<WatchUsers>()));
+          watchUsers: getIt<WatchUsers>(), auth: getIt<FirebaseAuth>(),localNotificationService: getIt<LocalNotificationService>()));
   getIt.registerLazySingleton<SignUpBloc>(()=> SignUpBloc(getIt<FirebaseAuth>(),firebaseFirestore));
+  getIt.registerLazySingleton<LoginBloc>(()=> LoginBloc(getIt<FirebaseAuth>()));
+  getIt.registerLazySingleton<NotificationService>(
+        () => NotificationService(
+      getIt<FirebaseAuth>(),
+      firebaseFirestore,
+    ),
+  );
 }

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_chat_app/features/chat/presentation/pages/widgets/select_user_for_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +29,14 @@ class _ChatListScreenState extends State<ChatListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chats'),
+        actions: [
+          IconButton(onPressed: (){
+              showDialog(context: context, builder: (context){
+                return SelectUserForGroup();
+              });
+          },
+              icon: Icon(Icons.group_add))
+        ],
       ),
       body: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
@@ -48,7 +57,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         builder: (_) => BlocProvider(
                           create: (_) => getIt<ChatBloc>()
                             ..add(ChatStarted(chatId)),
-                          child: ChatPage(chatId: chatId,),
+                          child: ChatPage(chatId: chatId,username: user.name,),
                         ),
                       ),
                     );

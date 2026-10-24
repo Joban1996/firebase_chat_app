@@ -1,3 +1,5 @@
+import 'package:firebase_chat_app/core/di/injection.dart';
+import 'package:firebase_chat_app/core/services/local_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/chat_bloc.dart';
@@ -16,13 +18,18 @@ class MessageInputBar extends StatefulWidget {
 class MessageInputBarState extends State<MessageInputBar> {
   final _controller = TextEditingController();
 
-  void _handleSend() {
+  void _handleSend() async{
     final text = _controller.text.trim();
     if (text.isEmpty) return;
 
     context.read<ChatBloc>().add(
       ChatMessageSent(text, widget.currentUserId, widget.chatId),
     );
+
+    // await getIt<LocalNotificationService>().showMessageNotification(
+    //   senderName: 'senderName',
+    //   message: text,
+    // );
 
     _controller.clear();
   }

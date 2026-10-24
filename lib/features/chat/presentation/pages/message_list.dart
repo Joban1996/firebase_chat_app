@@ -22,20 +22,27 @@ class BuildMessageList extends StatelessWidget {
         return Align(
           alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.7,
+            margin: EdgeInsets.only(right: 8,left: 8,top: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 8,
             ),
             decoration: BoxDecoration(
               color: isMe ? Colors.blue : Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(12),
+                topRight: const Radius.circular(12),
+                bottomLeft: Radius.circular(isMe ? 12 : 0),
+                bottomRight: Radius.circular(isMe ? 0 : 12),
+              ),
             ),
             child: Text(
               message.text,
-              style: TextStyle(color: isMe ? Colors.white : Colors.black87),
+              style: TextStyle(
+                color: isMe ? Colors.white : Colors.black,
+              ),
             ),
-          ),
+          )
         );
         ;
       },
