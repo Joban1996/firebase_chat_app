@@ -40,9 +40,15 @@ Future<void> main() async {
         BlocProvider<SignUpBloc>(
           create: (_) => getIt<SignUpBloc>(),
         ),
-          BlocProvider<ChatBloc>(
-            create: (_) => getIt<ChatBloc>()..add(UsersStarted()),
-          ),
+        BlocProvider<ChatBloc>(
+          create: (_) {
+            final bloc = getIt<ChatBloc>();
+            print('Main BLoC: ${identityHashCode(bloc)}');
+
+            bloc.add(ChatListStarted());
+            return bloc;
+          },
+        ),
       ],
       child: MaterialApp(
         home: user != null

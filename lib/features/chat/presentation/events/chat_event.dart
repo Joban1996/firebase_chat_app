@@ -8,7 +8,11 @@ class ChatStarted extends ChatEvent{
   ChatStarted(this.chatId);
 }
 
+class ChatListStarted extends ChatEvent{}
+
 class UsersStarted extends ChatEvent {}
+
+class GroupStarted extends ChatEvent{}
 
 class UsersLoaded extends ChatEvent{
   final List<User> users;
@@ -25,5 +29,12 @@ class ChatMessageSent extends ChatEvent{
   final String senderId;
   final String chatId;
   ChatMessageSent(this.text,this.senderId,this.chatId);
+}
+
+class CreateGroup extends ChatEvent{
+  final String groupName;
+  final List<String> memberIds;
+  final String currentUserId;
+  CreateGroup(this.groupName,this.memberIds,  this.currentUserId);
 }
 

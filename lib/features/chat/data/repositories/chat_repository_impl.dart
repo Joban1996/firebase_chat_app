@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/features/chat/data/data_sources/chat_data_source.dart';
+import 'package:firebase_chat_app/features/chat/data/model/group_model.dart';
 import 'package:firebase_chat_app/features/chat/data/model/message_model.dart';
 import 'package:firebase_chat_app/features/chat/data/model/user_model.dart';
 import 'package:firebase_chat_app/features/chat/domain/entities/message.dart';
@@ -27,6 +28,18 @@ class ChatRepositoryImpl implements ChatRepository{
   Stream<List<UserModel>> watchUsers() {
     // TODO: implement watchUsers
     return chatDataSource.watchUsers();
+  }
+
+  @override
+  Future<void> createGroup(GroupModel data) {
+    // TODO: implement createGroup
+    return chatDataSource.createGroup(groupName: data.name,memberIds: data.members,currentUserID: data.createdBy);
+  }
+
+  @override
+  Stream<List<GroupModel>> watchGroups(String userId) {
+    // TODO: implement watchGroups
+    return chatDataSource.watchGroups(userId);
   }
 
 

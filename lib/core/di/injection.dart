@@ -7,6 +7,7 @@ import 'package:firebase_chat_app/features/auth/data/data_source/auth_remote_dat
 import 'package:firebase_chat_app/features/auth/data/repositories/auth_repositories.dart';
 import 'package:firebase_chat_app/features/auth/data/repositories/auth_repository_implementation.dart';
 import 'package:firebase_chat_app/features/chat/data/repositories/chat_repository_impl.dart';
+import 'package:firebase_chat_app/features/chat/domain/usecases/create_group.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/send_message.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/watch_messages.dart';
 import 'package:firebase_chat_app/features/chat/domain/usecases/watch_users.dart';
@@ -16,6 +17,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/auth/presentation/cubit/auth_cubit.dart';
 import '../../features/chat/data/data_sources/chat_data_source.dart';
+import '../../features/chat/domain/usecases/watch_groups.dart';
 import '../../features/chat/presentation/bloc/chat_bloc.dart';
 import '../services/notification_service.dart';
 
@@ -28,6 +30,9 @@ Future<void> setUpLocator()async {
   getIt.registerLazySingleton<FirebaseAuth>(
         () => FirebaseAuth.instance,
   );
+  getIt.registerLazySingleton<FirebaseFirestore>(
+        () => FirebaseFirestore.instance,
+  );
   getIt.registerLazySingleton<LocalNotificationService>(()=> LocalNotificationService());
   getIt.registerLazySingleton<DioClient>(()=>DioClient());
   getIt.registerLazySingleton<AuthRemoteDatasource>(()=>AuthRemoteDatasource(getIt<DioClient>()));
@@ -35,15 +40,21 @@ Future<void> setUpLocator()async {
       AuthRepositoryImplementation(getIt<AuthRemoteDatasource>(), getIt<SecureStorageUtils>()));
   getIt.registerLazySingleton<AuthCubit>(
         () => AuthCubit(getIt<AuthRepositories>()),);
-  getIt.registerLazySingleton<ChatDataSource>(()=>ChatDataSource(firebaseFirestore));
+  getIt.registerLazySingleton<ChatDataSource>(()=>ChatDataSource());
   getIt.registerLazySingleton<ChatRepositoryImpl>(()=>ChatRepositoryImpl(getIt<ChatDataSource>()));
   getIt.registerLazySingleton<WatchMessages>(()=>WatchMessages(getIt<ChatRepositoryImpl>()));
   getIt.registerLazySingleton<SendMessage>(()=>SendMessage(getIt<ChatRepositoryImpl>()));
   getIt.registerLazySingleton<WatchUsers>(()=>WatchUsers(getIt<ChatRepositoryImpl>()));
+  getIt.registerLazySingleton<WatchGroups>(()=> WatchGroups(getIt<ChatRepositoryImpl>()));
+  getIt.registerLazySingleton<CreateGroupUseCase>(()=> CreateGroupUseCase(getIt<ChatRepositoryImpl>()));
   getIt.registerFactory<ChatBloc>(()=>
       ChatBloc(watchMessages: getIt<WatchMessages>(),
           sendMessage: getIt<SendMessage>(),
-          watchUsers: getIt<WatchUsers>(), auth: getIt<FirebaseAuth>(),localNotificationService: getIt<LocalNotificationService>()));
+          watchUsers: getIt<WatchUsers>(),
+          auth: getIt<FirebaseAuth>(),
+          createGroupUseCase: getIt<CreateGroupUseCase>(),
+          watchGroups: getIt<WatchGroups>()
+  ));
   getIt.registerLazySingleton<SignUpBloc>(()=> SignUpBloc(getIt<FirebaseAuth>(),firebaseFirestore));
   getIt.registerLazySingleton<LoginBloc>(()=> LoginBloc(getIt<FirebaseAuth>()));
   getIt.registerLazySingleton<NotificationService>(

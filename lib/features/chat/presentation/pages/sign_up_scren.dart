@@ -5,9 +5,6 @@ import 'package:firebase_chat_app/features/chat/presentation/states/sign_up_stat
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/di/injection.dart';
-import '../bloc/chat_bloc.dart';
-
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
 
@@ -22,10 +19,7 @@ class SignUpScreen extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                create: (_) => getIt<ChatBloc>(),
-                child: const ChatListScreen(),
-              ),
+              builder: (_) => const ChatListScreen(),
             ),
           );
         }

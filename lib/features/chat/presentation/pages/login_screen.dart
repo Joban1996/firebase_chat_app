@@ -1,4 +1,5 @@
 
+import 'package:firebase_chat_app/features/chat/presentation/pages/sign_up_scren.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_chat_app/features/chat/presentation/bloc/login_bloc.dart';
@@ -78,6 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     child:  const Text('Login'),
                   ),
+                  const SizedBox(height: 20),
+                  InkWell(
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (_)=> SignUpScreen())),
+                      child: Text("Go to Signup",style: TextStyle(color: Colors.blue),))
                 ],
               ),
             );

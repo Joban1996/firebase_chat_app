@@ -9,7 +9,8 @@ class MessageInputBar extends StatefulWidget {
   final String currentUserId;
   final String chatId;
 
-  const MessageInputBar({super.key, required this.currentUserId, required this.chatId});
+  const MessageInputBar({super.key, required this.currentUserId,
+    required this.chatId});
 
   @override
   State<MessageInputBar> createState() => MessageInputBarState();

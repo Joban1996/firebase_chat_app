@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_chat_app/features/chat/data/model/user_model.dart';
 import 'package:firebase_chat_app/features/chat/domain/entities/message.dart';
+
+import '../../domain/entities/group.dart';
+import '../../domain/entities/user.dart';
 
 abstract class ChatState extends Equatable{
 
@@ -12,9 +13,13 @@ abstract class ChatState extends Equatable{
 class ChatLoading extends ChatState{}
 
 class ChatUsersLoaded extends ChatState {
-  final List<UserModel> users;
+  final List<User> users;
+  final List<Group> groups;
 
-  ChatUsersLoaded(this.users);
+  ChatUsersLoaded(this.users, this.groups);
+
+  @override
+  List<Object?> get props => [users, groups];
 }
 
 class ChatLoaded extends ChatState{
@@ -30,6 +35,8 @@ class ChatError extends ChatState{
   @override
   List<Object?> get props => [error];
 }
+
+
 
 
 

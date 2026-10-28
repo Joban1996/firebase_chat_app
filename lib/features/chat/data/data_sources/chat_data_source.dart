@@ -1,21 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_chat_app/features/chat/data/model/group_model.dart';
 import '../../../../core/di/injection.dart';
 import '../model/message_model.dart';
 import '../model/user_model.dart';
 
 class ChatDataSource {
-  final FirebaseFirestore firebaseFirestore;
-  ChatDataSource(this.firebaseFirestore);
+  ChatDataSource();
 
   Future<void> sendMessage(MessageModel message) {
-    return firebaseFirestore.collection('messages').add(message.toMap());
+    return getIt<FirebaseFirestore>().collection('messages').add(message.toMap());
   }
 
 
   Stream<List<MessageModel>> watchMessages(String chatId) {
     print('Watching messages for chatId: $chatId');
-    return firebaseFirestore
+    return getIt<FirebaseFirestore>()
         .collection('messages')
         .where('chatId', isEqualTo: chatId)
         .orderBy('timestamp')
@@ -34,7 +34,7 @@ class ChatDataSource {
 
   Stream<List<UserModel>> watchUsers() {
     final currentUserId = getIt.call<FirebaseAuth>().currentUser!.uid;
-    return firebaseFirestore
+    return getIt<FirebaseFirestore>()
         .collection('users')
         .where('uid',isNotEqualTo: currentUserId)
         .snapshots()
@@ -57,10 +57,25 @@ class ChatDataSource {
       'createdBy': currentUserID,
       'createdAt': FieldValue.serverTimestamp()
     });
-
    return chatRef.id;
 
   }
+
+Stream<List<GroupModel>> watchGroups(String userId) {
+  print('watchGroups called');
+  return getIt<FirebaseFirestore>()
+      .collection('chats')
+      .where('members', arrayContains: userId)
+      .where('type', isEqualTo: 'group')
+      .snapshots()
+      .map((snapshot) {
+    print('Firestore groups count: ${snapshot.docs.length}');
+    return snapshot.docs
+        .map((doc) => GroupModel.fromMap(doc.data(), doc.id))
+        .toList();
+  });
+}
+
 
 
 }
